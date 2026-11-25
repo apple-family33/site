@@ -12,6 +12,23 @@
 <meta property="og:description" content="Время идёт вниз: войс-чаты, кружочки и просмотр по субботам и воскресеньям.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='8' fill='none' stroke='%23a6ec62' stroke-width='3'/%3E%3Ccircle cx='12' cy='12' r='2.5' fill='%23ff4b57'/%3E%3C/svg%3E">
 <title>Apple Family</title>
+<script>
+  /* ============ НАСТРОЙКИ САЙТА: меняй только здесь ============ */
+window.SITE={
+  changed:false,           /* true = на карточке «Скоро» горит плашка, false = плашки нет */
+  changedText:'ХЗ',  /* текст плашки, например 'ПЕРЕНЕСЛИ' или 'ОТМЕНА' */
+  unknown:true,           /* true = «когда следующий ГЧ — неизвестно»: карточка размыта, по центру большая плашка; false = обычная карточка с таймером */
+  unknownText:'СКОРО',    /* текст большой плашки */
+  oldAward:true,          /* true = над серебряной наградой горит плашка, false = плашки нет */
+  oldAwardText:'Старая Награда' /* текст плашки над серебряной наградой */
+};
+/* ============================================================== */
+/* Лайт-режим для слабых устройств: по умолчанию ВЫКЛЮЧЕН при открытии сайта (автоопределения нет),
+   включается только вручную кнопкой «Лайт» в меню, выбор запоминается. */
+(function(){var f=null;try{f=localStorage.getItem('af-lite')}catch(e){}
+window.LITE=f==='1';
+if(window.LITE)document.documentElement.classList.add('lite')})();
+</script>
 <style>
     :root{--bg:#000;--ink:#f5f5f7;--muted:#86868b;--line:rgba(255,255,255,.14);--red:#ff4b57;--green:#a6ec62;--glass:rgba(14,18,12,.72);--nav:rgba(0,0,0,.6);--ease:cubic-bezier(.28,.11,.32,1);color-scheme:dark;
 font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,system-ui,sans-serif}
@@ -246,9 +263,9 @@ h2.t{background:linear-gradient(180deg,var(--ink) 30%,var(--muted));-webkit-back
 @keyframes tw{50%{opacity:.3;transform:scale(.7)}}
 
 .fa{transform-box:fill-box;transform-origin:50% 0}
-.m:hover .fa{animation:fall 2.8s both}
+.m:hover .fa{animation:fallA 2.8s both}
 .m:hover .fa.f2{animation-delay:.25s}
-@keyframes fall{
+@keyframes fallA{
   0%{transform:translate(0,0) rotate(0);opacity:1;animation-timing-function:ease-in}
   8%{transform:translate(0,-2px) rotate(-6deg);opacity:1;animation-timing-function:ease-in}
   38%{transform:translate(4px,120px) rotate(24deg);opacity:1;animation-timing-function:ease-out}
@@ -259,6 +276,25 @@ h2.t{background:linear-gradient(180deg,var(--ink) 30%,var(--muted));-webkit-back
   92%{transform:translate(0,0) scale(1);opacity:1}
   100%{transform:translate(0,0) scale(1);opacity:1}}
 @media (prefers-reduced-motion:reduce){.m:hover .fa{animation:none}}
+/* ===== плашки на карточке «Скоро» (настройки: window.SITE) ===== */
+.ev.next .card{position:relative}
+.chg{position:absolute;top:-12px;right:20px;z-index:3;background:var(--red);color:#fff;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:999px;box-shadow:0 8px 24px rgba(255,75,87,.45);animation:chgp 2s ease-in-out infinite}
+@keyframes chgp{50%{transform:scale(1.07)}}
+.card.unk>*:not(.ukb):not(.chg){filter:blur(7px);opacity:.5;user-select:none;pointer-events:none}
+.ukb{position:absolute;inset:0;z-index:2;display:grid;place-items:center;text-align:center;font-size:clamp(2.2rem,8vw,4.4rem);font-weight:800;letter-spacing:-.04em;text-transform:uppercase}
+.ukb span{background:linear-gradient(90deg,var(--green),#ffd35c,var(--red));-webkit-background-clip:text;background-clip:text;color:transparent;animation:ukp 2.6s ease-in-out infinite}
+@keyframes ukp{50%{opacity:.55;transform:scale(.97)}}
+
+/* ===== плашка над серебряной наградой (настройки: window.SITE.oldAward) ===== */
+.old{position:absolute;top:-13px;left:50%;transform:translateX(-50%);z-index:3;max-width:calc(100% - 24px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--gc);color:#000;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:999px;box-shadow:0 8px 24px -8px var(--gc),inset 0 1px 0 rgba(255,255,255,.5);pointer-events:none}
+
+/* ===== лайт-режим: без размытия и тяжёлых анимаций ===== */
+:root.lite{--glass:rgba(14,18,12,.94)}
+:root.lite[data-theme="light"]{--glass:rgba(255,255,255,.96)}
+.lite *,.lite *::before,.lite *::after{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+.lite .mq div,.lite .cue i,.lite .cta::after,.lite .ac::before,.lite .ac.diamond,.lite .tw,.lite .apple::before,.lite .chg,.lite .ukb span{animation:none!important}
+.lite .apple::before{filter:none}
+@media (max-width:760px){.nav-r{gap:8px}.toggle{padding:5px 10px;font-size:.78rem}}
 </style>
 <noscript><style>.rv,.m,.card,.sub,.cta,.ghost{opacity:1!important}h1 .l i{transform:none!important}</style></noscript>
 </head>
@@ -269,6 +305,7 @@ h2.t{background:linear-gradient(180deg,var(--ink) 30%,var(--muted));-webkit-back
 <nav id="nav"><div class="wrap">
   <a class="logo" href="#top" aria-label="Apple Family, наверх"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="var(--green)" stroke-width="3"/><circle cx="12" cy="12" r="2.5" fill="var(--red)"/></svg>Apple Family</a>
   <div class="nav-r"><a href="#time">Время</a><a href="#about">Что у нас</a><a href="#awards">Награды</a><a href="#people">Участники</a>
+  <button class="toggle" id="lite" type="button" aria-pressed="false" aria-label="Лёгкий режим">Лайт</button>
   <button class="toggle" id="snd" type="button" aria-pressed="true" aria-label="Звук">Звук: вкл</button>
   <button class="toggle" id="theme" type="button" aria-label="Переключить тему">Тема</button></div>
 </div></nav>
@@ -329,7 +366,7 @@ h2.t{background:linear-gradient(180deg,var(--ink) 30%,var(--muted));-webkit-back
         <div class="vw" tabindex="0" role="group" aria-label="Золотое дерево, 3D-награда. Стрелки вращают, Enter переворачивает."><canvas></canvas><div class="fbk" aria-hidden="true"><svg viewBox="0 0 200 230"><use href="#ap"/></svg></div></div>
         <div class="ai"><span class="chip">Золото</span><button class="flip" type="button" aria-pressed="false">Перевернуть</button></div>
         <h3>Золотое дерево</h3>
-        <p class="d">Награда семьи. Проведён 1 час.</p>
+        <p class="d">Награда семьи. Проведёно 4 часа.</p>
         <details><summary>Что выгравировано снизу</summary><div class="det"></div></details>
       </article>
       <article class="ac diamond" data-tier="diamond">
@@ -343,7 +380,7 @@ h2.t{background:linear-gradient(180deg,var(--ink) 30%,var(--muted));-webkit-back
         <div class="vw" tabindex="0" role="group" aria-label="Серебряное дерево, 3D-награда. Стрелки вращают, Enter переворачивает."><canvas></canvas><div class="fbk" aria-hidden="true"><svg viewBox="0 0 200 230"><use href="#ap"/></svg></div></div>
         <div class="ai"><span class="chip">Серебро</span><button class="flip" type="button" aria-pressed="false">Перевернуть</button></div>
         <h3>Серебряное дерево</h3>
-        <p class="d">Войс-чат: 15-40 минут.</p>
+        <p class="d">Старая награда : 1 час</p>
         <details><summary>Что выгравировано снизу</summary><div class="det"></div></details>
       </article>
     </div>
@@ -352,7 +389,7 @@ h2.t{background:linear-gradient(180deg,var(--ink) 30%,var(--muted));-webkit-back
 
 <section class="people" id="people" aria-labelledby="h-p"><div class="wrap">
   <h2 class="t rv" id="h-p">Участники.</h2>
-  <p class="lead rv" style="--d:.1s">Нас семеро. Местоимения указаны у каждого.</p>
+  <p class="lead rv" style="--d:.1s">Нас шестеро. Местоимения указаны у каждого.</p>
   <div class="list" id="list"></div>
 </div></section>
 
@@ -425,9 +462,12 @@ function cur(){return root.getAttribute('data-theme')||'dark'}
 function label(){btn.textContent=cur()==='dark'?'Светлая':'Тёмная'}
 try{var s=localStorage.getItem('af-theme');if(s==='dark'||s==='light')root.setAttribute('data-theme',s)}catch(e){}
 label();
+var lb=$('lite');
+function ll(){lb.textContent=window.LITE?'Лайт: вкл':'Лайт: выкл';lb.setAttribute('aria-pressed',window.LITE?'true':'false')}
+ll();lb.addEventListener('click',function(){try{localStorage.setItem('af-lite',window.LITE?'0':'1')}catch(e){}location.reload()});
 btn.addEventListener('click',function(){var n=cur()==='dark'?'light':'dark';root.setAttribute('data-theme',n);try{localStorage.setItem('af-theme',n)}catch(e){}label()});
 
-var P=[['Лафил','Мотиватор пойти в Войс-чат','она / он / любые','#8fe03c','#2f7d1a'],['Эд','Slut войс-чата','он / его','#ff4b57','#a31d6b'],['Висмут','Милость войс-чата и фэмэли','она / её','#2fd0b8','#1f6f9e'],['Дипи','Крутой чувачок','он / его','#ffb020','#e0303c'],['Тосеша','Когда нибудь она зайдет в войс-чат','она / её','#d9e84a','#5fa91f'],['Аганим','Проверяющий войс-чата','он / его','#4f8dff','#1d4ed8'],['Рено','Мега Аурафармер','она / он / любые','#ff5fa8','#be123c']];
+var P=[['Лафил','Мотиватор пойти в Войс-чат','она / он / любые','#8fe03c','#2f7d1a'],['Эд','Slut войс-чата','он / его','#ff4b57','#a31d6b'],['Висмут','Милость войс-чата и фэмэли','она / её','#2fd0b8','#1f6f9e'],['Дипи','Крутой чувачок','он / его','#ffb020','#e0303c'],['Тосеша','Когда нибудь она зайдет в войс-чат','она / её','#d9e84a','#5fa91f'],['Рено','Мега Аурафармер','она / он / любые','#ff5fa8','#be123c']];
 function deco(i){
   var L='M0 0C6 -9 18 -9 25 0C18 9 6 9 0 0Z',
   lf=function(x,y,r,k){return '<g transform="translate('+x+' '+y+') rotate('+r+') scale('+k+')"><path d="'+L+'" style="fill:var(--green)"/><path d="M1 0H22" stroke="#fff" stroke-opacity=".4" stroke-width="1"/></g>'},
@@ -516,6 +556,21 @@ measure();sy=scrollY;render();
 var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');if(window.AFS&&e.target.classList.contains('ev'))window.AFS.play('sparkle');io.unobserve(e.target)}})},{threshold:.2});
 document.querySelectorAll('.ev,.m,.rv').forEach(function(e){io.observe(e)});
 
+var SC=window.SITE||{},nx=document.querySelector('.ev.next .card');
+if(nx){
+  if(SC.unknown){nx.classList.add('unk');var ub=el('div','ukb');ub.setAttribute('role','status');ub.appendChild(el('span','',SC.unknownText||'СКОРО'));nx.appendChild(ub);var ct=$('count');if(ct)ct.setAttribute('aria-hidden','true')}
+  if(SC.changed)nx.appendChild(el('span','chg',SC.changedText||'ИЗМЕНЕНО'));
+}
+/* плашка над серебряной наградой. Команда в консоли: setOldAward('новый текст') или setOldAward(false), чтобы убрать */
+var sv=document.querySelector('.ac.silver');
+window.setOldAward=function(t){
+  if(!sv)return;
+  var b=sv.querySelector('.old');
+  if(t===false||t===null||t===''){if(b)b.remove();return}
+  if(!b){b=el('span','old');sv.appendChild(b)}
+  b.textContent=String(t===true?'Старая Награда':t);
+};
+if(SC.oldAward)window.setOldAward(SC.oldAwardText||'Старая Награда');
 var cta=$('cta');
 if(fine&&!reduce){
   cta.addEventListener('pointermove',function(e){var b=cta.getBoundingClientRect();cta.style.transform='translate('+((e.clientX-b.left-b.width/2)*.25)+'px,'+((e.clientY-b.top-b.height/2)*.35)+'px)'});
@@ -530,16 +585,17 @@ if(fine&&!reduce){
     /* Награды ОБЕЗАТЕЛЬНО МЕНЯТЬ */
 
     var AWARDS={
-  diamond:{name:'АЛМАЗНОЕ ДЕРЕВО',foot:'APPLE FAMILY',head:['САМЫЙ ДОЛГИЙ','ВОЙС-ЧАТ'],big:'8 ЧАСОВ',blocks:[
-    {label:'УЧАСТНИКИ',items:['Лафил','Эд'],per:3},
-    {label:'АНИМЕ И ИГРА',items:['«Cyberpunk:Edgerunners» «Needy Girl Overdose» «Left 4 Dead 2»'],per:3}]},
+  diamond:{name:'АЛМАЗНОЕ ДЕРЕВО',foot:'APPLE FAMILY',head:['САМЫЙ ДОЛГИЙ','ВОЙС-ЧАТ'],big:'8 ЧАСОВ 35 МИНУТ',blocks:[
+    {label:'УЧАСТНИКИ',items:['Лафил','Висмут'],per:3},
+    {label:'ИГРЫ',items:['«Fortnite, Minecraft, Left 4 Dead 2»'],per:3}]},
   gold:{name:'ЗОЛОТОЕ ДЕРЕВО',foot:'APPLE FAMILY',head:'ЗОЛОТОЕ ДЕРЕВО',sub:'Награда семьи',blocks:[
-    {label:'ПРОВЕДЕНО',items:['1 час'],per:1},
-    {label:'ИГРА',items:['«Left 4 Dead 2»'],per:1},
-    {label:'УЧАСТНИКИ',items:['Лафил','Эд'],per:3}
+    {label:'ПРОВЕДЕНО',items:['6 ЧАСОВ'],per:1},
+    {label:'ИГРЫ',items:['«Left 4 Dead 2, Backrooms»'],per:1},
+    {label:'УЧАСТНИКИ',items:['Лафил','Висмут'],per:3}
   ]},
-  silver:{name:'СЕРЕБРЯНОЕ ДЕРЕВО',foot:'APPLE FAMILY',head:'ВОЙС-ЧАТ',big:'15-40 МИНУТ',blocks:[
-    {label:'ДЕМКА',items:['Вайбкодинг сайта Apple Family'],per:1}]}
+  silver:{name:'СЕРЕБРЯНОЕ ДЕРЕВО',foot:'APPLE FAMILY',head:'ВОЙС-ЧАТ',big:'1 ЧАС',blocks:[
+    {label:'ИГРА',items:['«Left 4 Dead 2»'],per:1},
+    {label:'УЧАСТНИКИ',items:['Лафил','Эд'],per:3}]}
 };
 function chunk(a,n){var o=[],i;for(i=0;i<a.length;i+=n)o.push(a.slice(i,i+n).join(' · '));return o}
 
@@ -1048,7 +1104,7 @@ if(window.IntersectionObserver){
 <script>
 addEventListener('DOMContentLoaded',function(){
 var TH=window.THREE,root=document.documentElement,cv=document.getElementById('gl');
-if(!TH){root.classList.add('nogl','noapple');window.AFFB();return}
+if(!TH||window.LITE){root.classList.add('nogl','noapple');window.AFFB();return}
 
 try{window.AFInit(TH)}catch(e){root.classList.add('noapple');window.AFFB()}
 
